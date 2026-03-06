@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 
-st.title("Bitcoin Price Prediction App")
+st.title("Bitcoin Price Prediction using Machine Learning")
 
 st.write("Upload a Bitcoin historical dataset to predict future prices.")
 
@@ -78,5 +78,6 @@ if uploaded_file is not None:
     ax.set_title("Bitcoin Price Trend")
 
     ax.legend()
+
 
     st.pyplot(fig)
