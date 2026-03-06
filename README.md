@@ -1,3 +1,16 @@
+# Bitcoin Price Prediction using Linear Regression
+
+Live App: https://yqhhc2pgpyktsjbvy3cbli.streamlit.app
+
+This project predicts Bitcoin prices using historical data and Linear Regression.
+
+## Features
+- Upload Bitcoin dataset
+- Train machine learning model
+- Predict future price
+- Visualization using Matplotlib
+
+
 📈 Bitcoin Price Prediction using Linear Regression
 
 This project builds a simple machine learning model to predict the next day's Bitcoin closing price using historical daily trading data. It involves data preprocessing, feature engineering, and training a linear regression model. The performance is evaluated using common regression metrics and visualized with Matplotlib.
@@ -102,3 +115,4 @@ scikit-learn
 
 Alamgir Khan
 📘 GitHub Profile
+
