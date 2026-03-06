@@ -6,26 +6,28 @@ import matplotlib.pyplot as plt
 
 st.title("Bitcoin Price Prediction App")
 
+st.write("Upload a Bitcoin historical dataset to predict future prices.")
+
 # Upload dataset
 uploaded_file = st.file_uploader("Upload Bitcoin price dataset (CSV)", type="csv")
 
 if uploaded_file is not None:
+
     data = pd.read_csv(uploaded_file)
 
     st.subheader("Dataset Preview")
-    st.write(data.head())
+    st.dataframe(data.head())
 
-    # Show columns so user knows dataset structure
-    st.write("Columns in dataset:", list(data.columns))
+    st.write("Columns detected:", list(data.columns))
 
-    # Detect date column automatically
+    # Detect date column
     date_col = None
     for col in data.columns:
         if "date" in col.lower() or "time" in col.lower():
             date_col = col
             break
 
-    # Detect price column automatically
+    # Detect price column
     price_col = None
     for col in data.columns:
         if "close" in col.lower() or "price" in col.lower():
@@ -33,33 +35,48 @@ if uploaded_file is not None:
             break
 
     if date_col is None or price_col is None:
-        st.error("Could not detect Date or Price column automatically. Please check your dataset.")
-    else:
-        # Convert date column
-        data[date_col] = pd.to_datetime(data[date_col])
+        st.error("Date or Price column could not be detected automatically.")
+        st.stop()
 
-        # Convert to numeric timeline
-        data["Days"] = (data[date_col] - data[date_col].min()).dt.days
+    # Convert date column
+    data[date_col] = pd.to_datetime(data[date_col])
 
-        X = data[["Days"]]
-        y = data[price_col]
+    # Create numeric timeline
+    data["Days"] = (data[date_col] - data[date_col].min()).dt.days
 
-        # Train model
-        model = LinearRegression()
-        model.fit(X, y)
+    X = data[["Days"]]
+    y = data[price_col]
 
-        future_days = st.slider("Days in future for prediction", 1, 365, 30)
+    # Train model
+    model = LinearRegression()
+    model.fit(X, y)
 
-        future_value = model.predict([[data["Days"].max() + future_days]])
+    st.subheader("Prediction Settings")
 
-        st.subheader("Predicted Bitcoin Price")
-        st.write(float(future_value[0]))
+    future_days = st.slider("Days into the future", 1, 365, 30)
 
-        # Plot results
-        fig, ax = plt.subplots()
-        ax.scatter(X, y)
-        ax.plot(X, model.predict(X), color="red")
-        ax.set_xlabel("Days")
-        ax.set_ylabel("Bitcoin Price")
+    future_input = pd.DataFrame({
+        "Days":[data["Days"].max() + future_days]
+    })
 
-        st.pyplot(fig)
+    prediction = model.predict(future_input)
+
+    predicted_price = float(prediction[0])
+
+    st.subheader("Predicted Bitcoin Price")
+
+    st.success(f"Predicted price after {future_days} days: ${predicted_price:,.2f}")
+
+    # Plot
+    fig, ax = plt.subplots()
+
+    ax.scatter(X, y, label="Historical Data")
+    ax.plot(X, model.predict(X), color="red", label="Regression Line")
+
+    ax.set_xlabel("Days")
+    ax.set_ylabel("Bitcoin Price")
+    ax.set_title("Bitcoin Price Trend")
+
+    ax.legend()
+
+    st.pyplot(fig)
