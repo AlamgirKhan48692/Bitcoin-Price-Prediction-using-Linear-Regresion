@@ -5,13 +5,10 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 
-# ---------------- UI CONFIG ----------------
 st.set_page_config(page_title="Bitcoin Predictor", layout="wide")
 
 st.title("🚀 Bitcoin Price Prediction Dashboard")
-st.markdown("Upload a dataset and predict future Bitcoin prices using Machine Learning.")
 
-# ---------------- FILE UPLOAD ----------------
 uploaded_file = st.file_uploader("📂 Upload CSV file", type="csv")
 
 if uploaded_file is not None:
@@ -21,9 +18,7 @@ if uploaded_file is not None:
     st.subheader("📊 Dataset Preview")
     st.dataframe(data.head())
 
-    # ---------------- COLUMN SELECTION ----------------
-    st.subheader("⚙️ Select Columns")
-
+    # -------- SELECT COLUMNS --------
     col1, col2 = st.columns(2)
 
     with col1:
@@ -32,73 +27,59 @@ if uploaded_file is not None:
     with col2:
         price_col = st.selectbox("Select Price Column", data.columns)
 
-    # ---------------- DATA PROCESSING ----------------
+    # -------- CLEAN DATA --------
     try:
         data[date_col] = pd.to_datetime(data[date_col])
+        data[price_col] = pd.to_numeric(data[price_col], errors='coerce')
     except:
-        st.error("❌ Selected date column is not valid.")
+        st.error("Invalid column selection")
         st.stop()
 
+    data = data.dropna()
     data = data.sort_values(by=date_col)
-    data["Days"] = (data[date_col] - data[date_col].min()).dt.days
 
-    X = data[["Days"]]
-    y = data[price_col]
+    # -------- CREATE DAYS --------
+    data["Days"] = (data[date_col] - data[date_col].min()).dt.days.astype(float)
 
-    # ---------------- MODEL ----------------
+    X = data["Days"].values.reshape(-1, 1)
+    y = data[price_col].values
+
+    # -------- MODEL --------
     model = LinearRegression()
     model.fit(X, y)
 
     y_pred = model.predict(X)
 
-    # ---------------- METRICS ----------------
+    # -------- METRICS --------
     r2 = model.score(X, y)
     mse = mean_squared_error(y, y_pred)
 
     st.subheader("📈 Model Performance")
-
     col1, col2 = st.columns(2)
     col1.metric("R² Score", round(r2, 3))
-    col2.metric("Mean Squared Error", f"{mse:,.2f}")
+    col2.metric("MSE", f"{mse:,.2f}")
 
-    # ---------------- PREDICTION INPUT ----------------
-    st.subheader("🔮 Predict Future Price")
-
+    # -------- FUTURE PREDICTION --------
     future_days = st.slider("Days into the future", 1, 365, 30)
 
-    future_input = pd.DataFrame({
-        "Days": [data["Days"].max() + future_days]
-    })
+    future_value = np.array([[X.max() + future_days]])
+    predicted_price = model.predict(future_value)[0]
 
-    prediction = model.predict(future_input)
-    predicted_price = float(prediction[0])
+    st.success(f"💰 Predicted price after {future_days} days: ${predicted_price:,.2f}")
 
-    st.success(f"💰 Predicted Bitcoin price after {future_days} days: ${predicted_price:,.2f}")
-
-    # ---------------- GRAPH ----------------
+    # -------- GRAPH --------
     st.subheader("📉 Visualization")
 
-    fig, ax = plt.subplots(figsize=(10, 5))
-
-    # Convert to pure numpy arrays (VERY IMPORTANT)
-    x_vals = X.values.flatten().astype(float)
-    y_vals = y.values.astype(float)
+    fig, ax = plt.subplots(figsize=(10,5))
 
     # Scatter
-    ax.scatter(x_vals, y_vals, color="blue", alpha=0.6, label="Historical Data")
+    ax.scatter(X.flatten(), y, color="blue", alpha=0.6, label="Historical Data")
 
-    # Safe range (LIMIT SIZE + ensure float)
-    max_day = float(data["Days"].max() + future_days)
-    future_range = np.linspace(0, max_day, 300).reshape(-1, 1)
+    # Smooth line
+    x_line = np.linspace(X.min(), X.max() + future_days, 300).reshape(-1,1)
+    y_line = model.predict(x_line)
 
-    future_pred = model.predict(future_range)
-
-    # Plot line
-    ax.plot(future_range.flatten(), future_pred, color="red", linewidth=2, label="Prediction Trend")
-
-    # Force numeric axis (CRITICAL FIX)
-    ax.set_xlim(0, max_day)
-    ax.set_ylim(float(y_vals.min()), float(y_vals.max()))
+    ax.plot(x_line, y_line, color="red", linewidth=2, label="Prediction Trend")
 
     ax.set_xlabel("Days")
     ax.set_ylabel("Price")
