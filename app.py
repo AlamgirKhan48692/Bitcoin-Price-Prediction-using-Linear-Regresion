@@ -2,68 +2,68 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 
-st.title("Bitcoin Price Prediction using Machine Learning")
+# ---------------- UI CONFIG ----------------
+st.set_page_config(page_title="Bitcoin Predictor", layout="wide")
 
-st.write("Upload a Bitcoin historical dataset to predict future prices.")
+st.title("🚀 Bitcoin Price Prediction Dashboard")
+st.markdown("Upload a dataset and predict future Bitcoin prices using Machine Learning.")
 
-# Upload dataset
-uploaded_file = st.file_uploader("Upload Bitcoin price dataset (CSV)", type="csv")
+# ---------------- FILE UPLOAD ----------------
+uploaded_file = st.file_uploader("📂 Upload CSV file", type="csv")
 
 if uploaded_file is not None:
 
-    # Read dataset
     data = pd.read_csv(uploaded_file)
 
-    st.subheader("Dataset Preview")
+    st.subheader("📊 Dataset Preview")
     st.dataframe(data.head())
 
-    st.write("Columns detected:", list(data.columns))
+    # ---------------- COLUMN SELECTION ----------------
+    st.subheader("⚙️ Select Columns")
 
-    # Detect date column automatically
-    date_col = None
-    for col in data.columns:
-        if "date" in col.lower() or "time" in col.lower():
-            date_col = col
-            break
+    col1, col2 = st.columns(2)
 
-    # Detect price column automatically
-    price_col = None
-    for col in data.columns:
-        if "close" in col.lower() or "price" in col.lower():
-            price_col = col
-            break
+    with col1:
+        date_col = st.selectbox("Select Date Column", data.columns)
 
-    if date_col is None or price_col is None:
-        st.error("Date or Price column could not be detected automatically.")
+    with col2:
+        price_col = st.selectbox("Select Price Column", data.columns)
+
+    # ---------------- DATA PROCESSING ----------------
+    try:
+        data[date_col] = pd.to_datetime(data[date_col])
+    except:
+        st.error("❌ Selected date column is not valid.")
         st.stop()
 
-    # Convert date column
-    data[date_col] = pd.to_datetime(data[date_col])
-
-    # Sort dataset by date
     data = data.sort_values(by=date_col)
-
-    # Create numeric timeline
     data["Days"] = (data[date_col] - data[date_col].min()).dt.days
 
     X = data[["Days"]]
     y = data[price_col]
 
-    # Train model
+    # ---------------- MODEL ----------------
     model = LinearRegression()
     model.fit(X, y)
 
-    # Model accuracy
-    score = model.score(X, y)
+    y_pred = model.predict(X)
 
-    st.subheader("Model Performance")
-    st.write("Model R² Score:", round(score, 3))
+    # ---------------- METRICS ----------------
+    r2 = model.score(X, y)
+    mse = mean_squared_error(y, y_pred)
 
-    st.subheader("Prediction Settings")
+    st.subheader("📈 Model Performance")
 
-    # Slider for future prediction
+    col1, col2 = st.columns(2)
+    col1.metric("R² Score", round(r2, 3))
+    col2.metric("Mean Squared Error", f"{mse:,.2f}")
+
+    # ---------------- PREDICTION INPUT ----------------
+    st.subheader("🔮 Predict Future Price")
+
     future_days = st.slider("Days into the future", 1, 365, 30)
 
     future_input = pd.DataFrame({
@@ -71,27 +71,30 @@ if uploaded_file is not None:
     })
 
     prediction = model.predict(future_input)
-
     predicted_price = float(prediction[0])
 
-    st.subheader("Predicted Bitcoin Price")
+    st.success(f"💰 Predicted Bitcoin price after {future_days} days: ${predicted_price:,.2f}")
 
-    st.success(f"Predicted price after {future_days} days: ${predicted_price:,.2f}")
+    # ---------------- GRAPH ----------------
+    st.subheader("📉 Visualization")
 
-    # Plot historical + prediction trend
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(10,5))
 
-    ax.scatter(X, y, label="Historical Data")
+    ax.scatter(X, y, color="blue", alpha=0.6, label="Historical Data")
 
     future_range = np.arange(0, data["Days"].max() + future_days).reshape(-1,1)
     future_pred = model.predict(future_range)
 
-    ax.plot(future_range, future_pred, color="red", label="Prediction Trend")
+    ax.plot(future_range, future_pred, color="red", linewidth=2, label="Prediction Trend")
 
     ax.set_xlabel("Days")
-    ax.set_ylabel("Bitcoin Price")
+    ax.set_ylabel("Price")
     ax.set_title("Bitcoin Price Prediction Trend")
 
+    ax.grid(True, linestyle="--", alpha=0.5)
     ax.legend()
 
     st.pyplot(fig)
+
+else:
+    st.info("👆 Upload a CSV file to get started")
