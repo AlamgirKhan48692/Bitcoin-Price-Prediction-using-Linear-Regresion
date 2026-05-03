@@ -79,6 +79,7 @@ Live App:
 ---
 
 ### 🏠 Home Page
+***
 ![Home](Screenshots/Home.png)
 
 ---
