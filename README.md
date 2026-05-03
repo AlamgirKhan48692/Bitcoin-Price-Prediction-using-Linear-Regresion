@@ -1,118 +1,97 @@
-# Bitcoin Price Prediction using Linear Regression
+🚀 Bitcoin Price Prediction Dashboard
 
-Live App: https://yqhhc2pgpyktsjbvy3cbli.streamlit.app
+Live App:
+👉 https://yqhhc2pgpyktsjbvy3cbli.streamlit.app
 
-This project predicts Bitcoin prices using historical data and Linear Regression.
+A machine learning web app built with Streamlit that predicts Bitcoin prices using historical data and Linear Regression.
 
-## Features
-- Upload Bitcoin dataset
-- Train machine learning model
-- Predict future price
-- Visualization using Matplotlib
+📌 Overview
 
+This project allows users to:
 
-📈 Bitcoin Price Prediction using Linear Regression
+Upload a Bitcoin dataset (CSV)
+Automatically detect relevant columns
+Train a regression model
+Predict future Bitcoin prices
+Visualize trends interactively
+✨ Features
+📂 Upload custom CSV datasets
+🤖 Train Linear Regression model instantly
+📊 Model performance metrics (R², MSE)
+🔮 Future price prediction (slider-based)
+📉 Clean visualization with trend line
+⚡ Fast & interactive UI using Streamlit
+📂 Dataset Format
 
-This project builds a simple machine learning model to predict the next day's Bitcoin closing price using historical daily trading data. It involves data preprocessing, feature engineering, and training a linear regression model. The performance is evaluated using common regression metrics and visualized with Matplotlib.
+The dataset should contain:
 
-📂 Dataset
-
-The dataset consists of daily Bitcoin trading data with the following features:
-
-Open Time: Timestamp of the trading day start
-
-Open: Opening price
-
-High: Highest price of the day
-
-Low: Lowest price of the day
-
-Close: Closing price (used as target)
-
-Volume: Trading volume for the day
-
-
-📥 Download Sample CSV from CryptoDataDownload
-
-🔧 Features Used
-
-The following features were selected for prediction:
-
-Open
-
-High
-
-Low
-
-Volume
-
-Target: Next day's Close price
-
-
-🚀 Workflow
-
-1. Load & Preprocess the Data
-Convert Open Time to datetime
-
-Sort by date
-
-Create Target column by shifting Close one day up
-
-Drop last row with NaN
-
-2. Train-Test Split
-Use 80% for training, 20% for testing (no shuffle to maintain time sequence)
-
-3. Train Model
-python
-Copy
-Edit
-
-
-from sklearn.linear_model import LinearRegression
-5. Evaluate Model
+Column	Description
+Open Time	Date/time of trading
+Open	Opening price
+High	Highest price
+Low	Lowest price
+Close	Closing price ✅ (target)
+Volume	Trading volume
+⚙️ How It Works
+Upload dataset
+Select:
+Date column (e.g., Open Time)
+Price column (e.g., Close)
+App:
+Converts date → numeric timeline
+Trains Linear Regression model
+Predict future price using slider
+Visualizes:
+Historical data (scatter)
+Prediction trend (line)
+📊 Model Details
+Algorithm: LinearRegression (Scikit-learn)
+Input Feature: Time (Days)
+Output: Bitcoin Price
 Metrics:
+R² Score → Model accuracy
+MSE → Error measurement
+## 📸 Screenshots
 
-MAE (Mean Absolute Error)
+### 🏠 Home Page
+![Home](Screenshots/Home.png)
 
-RMSE (Root Mean Squared Error)
+### 📊 Dataset Preview
+![Dataset](Screenshots/Dataset.png)
 
-R² Score
+### ⚙️ Column Selection
+![Columns](Screenshots/Columns.png)
 
-5. Visualize
-6. 
-Actual vs Predicted prices plotted using Matplotlib
+### 📈 Model Performance
+![Performance](Screenshots/Performance.png)
 
+### 📉 Prediction Graph
+![Graph](Screenshots/Graph.png)
 
-📊 Evaluation Example
+📦 Installation
+git clone https://github.com/your-username/bitcoin-price-prediction-using-linear-regresion.git
+cd bitcoin-price-prediction-using-linear-regresion
+pip install -r requirements.txt
+streamlit run app.py
+🧠 Example Output
+Predicted Price: $79,633.02
+R² Score: 0.456
+MSE: 354,829,993
+⚠️ Note
 
-makefile
-Copy
-Edit
-MAE: 312.25
-RMSE: 408.33
-R²: 0.8724
+This model uses simple Linear Regression, so:
 
-
-📌 Requirements
-
-Python 3.x
-
-pandas
-
-numpy
-
-matplotlib
-
-scikit-learn
-
-📸 Sample Output Plot
-
-(optional if you generate a plot image)
-
-
-✍️ Author
+It captures general trend only
+It does NOT account for market volatility
+Not suitable for real trading decisions
+🚀 Future Improvements
+Add advanced models (Random Forest, LSTM)
+Interactive charts (Plotly)
+Multiple feature inputs (Open, High, Low, Volume)
+Export predictions
+Model comparison dashboard
+👨‍💻 Author
 
 Alamgir Khan
-📘 GitHub Profile
+📘 GitHub: https://github.com/your-username
 
