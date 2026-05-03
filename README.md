@@ -28,11 +28,17 @@ Visualize trends interactively
 
 
 📂 Upload custom CSV datasets
+
 🤖 Train Linear Regression model instantly
+
 📊 Model performance metrics (R², MSE)
+
 🔮 Future price prediction (slider-based)
+
 📉 Clean visualization with trend line
+
 ⚡ Fast & interactive UI using Streamlit
+
 
 
 
@@ -41,12 +47,19 @@ Visualize trends interactively
 📂 Dataset Format
 
 The dataset should contain:
+
 Column	Description
+
 Open Time	Date/time of trading
+
 Open	Opening price
+
 High	Highest price
+
 Low	Lowest price
+
 Close	Closing price ✅ (target)
+
 Volume	Trading volume
 
 
@@ -54,24 +67,34 @@ Volume	Trading volume
 
 
 
+
 ⚙️ How It Works
+
 Upload dataset
+
 Select:
+
 Date column (e.g., Open Time)
+
 Price column (e.g., Close)
+
 
 
 App:
 
 Converts date → numeric timeline
+
 Trains Linear Regression model
+
 Predict future price using slider
+
 
 
 
 Visualizes:
 
 Historical data (scatter)
+
 Prediction trend (line)
 
 
@@ -81,14 +104,19 @@ Prediction trend (line)
 
 
 Algorithm: LinearRegression (Scikit-learn)
+
 Input Feature: Time (Days)
+
 Output: Bitcoin Price
+
 
 
 
 Metrics:
 R² Score → Model accuracy
+
 MSE → Error measurement
+
 
 
 
@@ -114,8 +142,11 @@ MSE → Error measurement
 📦 Installation
 
 git clone https://github.com/AlamgirKhan48692your-username/bitcoin-price-prediction-using-linear-regresion.git
+
 cd bitcoin-price-prediction-using-linear-regresion
+
 pip install -r requirements.txt
+
 streamlit run app.py
 
 
@@ -125,7 +156,9 @@ streamlit run app.py
 🧠 Example Output
 
 Predicted Price: $79,633.02
+
 R² Score: 0.456
+
 MSE: 354,829,993
 
 
@@ -133,8 +166,11 @@ MSE: 354,829,993
 ⚠️ Note
 
 This model uses simple Linear Regression, so:
+
 It captures general trend only
+
 It does NOT account for market volatility
+
 Not suitable for real trading decisions
 
 
@@ -145,10 +181,15 @@ Not suitable for real trading decisions
 
 
 Add advanced models (Random Forest, LSTM)
+
 Interactive charts (Plotly)
-Multiple feature inputs (Open, High, Low, Volume)
+
+Multiple feature inputs (Open, High, Low, Volume
+
 Export predictions
+
 Model comparison dashboard
+
 
 
 
