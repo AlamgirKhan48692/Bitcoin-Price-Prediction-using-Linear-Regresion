@@ -81,15 +81,19 @@ Live App:
 ### 🏠 Home Page
 ![Home](Screenshots/Home.png)
 
+---
 ### 📊 Dataset Preview
 ![Dataset](Screenshots/Dataset.png)
 
+---
 ### ⚙️ Column Selection
 ![Columns](Screenshots/Columns.png)
 
+---
 ### 📈 Model Performance
 ![Performance](Screenshots/Performance.png)
 
+---
 ### 📉 Prediction Graph
 ![Graph](Screenshots/Graph.png)
 ***
