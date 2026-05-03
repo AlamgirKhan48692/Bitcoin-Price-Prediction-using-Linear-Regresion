@@ -80,22 +80,25 @@ if uploaded_file is not None:
 
     fig, ax = plt.subplots(figsize=(10, 5))
 
-ax.scatter(X, y, color="blue", alpha=0.6, label="Historical Data")
+    # Scatter plot
+    ax.scatter(X, y, color="blue", alpha=0.6, label="Historical Data")
 
-max_day = int(data["Days"].max() + future_days)
-future_range = np.linspace(0, max_day, 500).reshape(-1, 1)
-future_pred = model.predict(future_range)
+    # Safe prediction range (fix overflow)
+    max_day = int(data["Days"].max() + future_days)
+    future_range = np.linspace(0, max_day, 500).reshape(-1, 1)
+    future_pred = model.predict(future_range)
 
-ax.plot(future_range, future_pred, color="red", linewidth=2, label="Prediction Trend")
+    # Line plot
+    ax.plot(future_range, future_pred, color="red", linewidth=2, label="Prediction Trend")
 
-ax.set_xlabel("Days")
-ax.set_ylabel("Price")
-ax.set_title("Bitcoin Price Prediction Trend")
+    ax.set_xlabel("Days")
+    ax.set_ylabel("Price")
+    ax.set_title("Bitcoin Price Prediction Trend")
 
-ax.grid(True, linestyle="--", alpha=0.5)
-ax.legend()
+    ax.grid(True, linestyle="--", alpha=0.5)
+    ax.legend()
 
-st.pyplot(fig)
+    st.pyplot(fig)
 
 else:
     st.info("👆 Upload a CSV file to get started")
