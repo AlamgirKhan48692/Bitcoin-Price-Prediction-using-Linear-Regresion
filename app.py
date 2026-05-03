@@ -18,24 +18,46 @@ if uploaded_file is not None:
     st.subheader("📊 Dataset Preview")
     st.dataframe(data.head())
 
+    st.write("Columns detected:", list(data.columns))
+
+    # -------- AUTO DETECT --------
+    date_guess = None
+    price_guess = None
+
+    for col in data.columns:
+        if "date" in col.lower() or "time" in col.lower():
+            date_guess = col
+        if "close" in col.lower() or "price" in col.lower():
+            price_guess = col
+
     # -------- SELECT COLUMNS --------
+    st.subheader("⚙️ Select Columns")
+
     col1, col2 = st.columns(2)
 
     with col1:
-        date_col = st.selectbox("Select Date Column", data.columns)
+        date_col = st.selectbox("Select Date Column", data.columns,
+                                index=data.columns.get_loc(date_guess) if date_guess else 0)
 
     with col2:
-        price_col = st.selectbox("Select Price Column", data.columns)
+        price_col = st.selectbox("Select Price Column", data.columns,
+                                 index=data.columns.get_loc(price_guess) if price_guess else 1)
 
-    # -------- CLEAN DATA --------
-    try:
-        data[date_col] = pd.to_datetime(data[date_col])
-        data[price_col] = pd.to_numeric(data[price_col], errors='coerce')
-    except:
-        st.error("Invalid column selection")
+    # -------- VALIDATION --------
+    if date_col == price_col:
+        st.error("❌ Date and Price columns must be different")
         st.stop()
 
-    data = data.dropna()
+    # -------- CLEAN DATA --------
+    data[date_col] = pd.to_datetime(data[date_col], errors='coerce')
+    data[price_col] = pd.to_numeric(data[price_col], errors='coerce')
+
+    data = data.dropna(subset=[date_col, price_col])
+
+    if len(data) < 10:
+        st.error("❌ Not enough valid data")
+        st.stop()
+
     data = data.sort_values(by=date_col)
 
     # -------- CREATE DAYS --------
@@ -60,6 +82,8 @@ if uploaded_file is not None:
     col2.metric("MSE", f"{mse:,.2f}")
 
     # -------- FUTURE PREDICTION --------
+    st.subheader("🔮 Predict Future Price")
+
     future_days = st.slider("Days into the future", 1, 365, 30)
 
     future_value = np.array([[X.max() + future_days]])
@@ -73,13 +97,13 @@ if uploaded_file is not None:
     fig, ax = plt.subplots(figsize=(10,5))
 
     # Scatter
-    ax.scatter(X.flatten(), y, color="blue", alpha=0.6, label="Historical Data")
+    ax.scatter(X.flatten(), y, alpha=0.6, label="Historical Data")
 
     # Smooth line
     x_line = np.linspace(X.min(), X.max() + future_days, 300).reshape(-1,1)
     y_line = model.predict(x_line)
 
-    ax.plot(x_line, y_line, color="red", linewidth=2, label="Prediction Trend")
+    ax.plot(x_line, y_line, linewidth=2, label="Prediction Trend")
 
     ax.set_xlabel("Days")
     ax.set_ylabel("Price")
