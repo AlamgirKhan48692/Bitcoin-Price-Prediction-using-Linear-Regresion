@@ -1,12 +1,12 @@
 🚀 Bitcoin Price Prediction Dashboard
-
+----
 
 
 Live App:
 👉 https://yqhhc2pgpyktsjbvy3cbli.streamlit.app
 
 * A machine learning web app built with Streamlit that predicts Bitcoin prices using historical data and Linear Regression.
-
+***
 
 
 
