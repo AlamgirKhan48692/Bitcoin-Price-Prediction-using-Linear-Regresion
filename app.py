@@ -78,21 +78,30 @@ if uploaded_file is not None:
     # ---------------- GRAPH ----------------
     st.subheader("📉 Visualization")
 
-    fig, ax = plt.subplots(figsize=(10,5))
+    fig, ax = plt.subplots(figsize=(10, 5))
 
+    # scatter
     ax.scatter(X, y, color="blue", alpha=0.6, label="Historical Data")
 
-    future_range = np.arange(0, data["Days"].max() + future_days).reshape(-1,1)
+    # ✅ FIX: limit number of points (prevents overflow crash)
+    max_day = int(data["Days"].max() + future_days)
+    future_range = np.linspace(0, max_day, 500).reshape(-1, 1)
     future_pred = model.predict(future_range)
 
+    # line
     ax.plot(future_range, future_pred, color="red", linewidth=2, label="Prediction Trend")
 
+    # labels
     ax.set_xlabel("Days")
     ax.set_ylabel("Price")
     ax.set_title("Bitcoin Price Prediction Trend")
 
+    # styling
     ax.grid(True, linestyle="--", alpha=0.5)
     ax.legend()
+
+    # ✅ FIX: prevent matplotlib date overflow bug
+    ax.xaxis_date(False)
 
     st.pyplot(fig)
 
