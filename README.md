@@ -5,7 +5,7 @@
 Live App:
 👉 https://yqhhc2pgpyktsjbvy3cbli.streamlit.app
 
-A machine learning web app built with Streamlit that predicts Bitcoin prices using historical data and Linear Regression.
+* A machine learning web app built with Streamlit that predicts Bitcoin prices using historical data and Linear Regression.
 
 
 
@@ -14,9 +14,9 @@ A machine learning web app built with Streamlit that predicts Bitcoin prices usi
 
 
 📌 Overview
-This project allows users to:
+* This project allows users to:
 
-Upload a Bitcoin dataset (CSV)
+* Upload a Bitcoin dataset (CSV)
 Automatically detect relevant columns
 Train a regression model
 Predict future Bitcoin prices
