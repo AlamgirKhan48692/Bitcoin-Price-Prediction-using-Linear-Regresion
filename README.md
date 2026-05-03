@@ -54,7 +54,6 @@ Live App:
 
 
 ⚙️ How It Works
-
 * Upload dataset
 * Select:
 * Date column (e.g., Open Time)
