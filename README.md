@@ -10,6 +10,8 @@ A machine learning web app built with Streamlit that predicts Bitcoin prices usi
 
 
 
+
+
 📌 Overview
 
 This project allows users to:
@@ -21,7 +23,9 @@ Predict future Bitcoin prices
 Visualize trends interactively
 
 
+
 ✨ Features
+
 📂 Upload custom CSV datasets
 🤖 Train Linear Regression model instantly
 📊 Model performance metrics (R², MSE)
@@ -32,6 +36,7 @@ Visualize trends interactively
 
 
 📂 Dataset Format
+
 
 The dataset should contain:
 
@@ -45,7 +50,9 @@ Volume	Trading volume
 
 
 
+
 ⚙️ How It Works
+
 Upload dataset
 Select:
 Date column (e.g., Open Time)
@@ -60,6 +67,7 @@ Prediction trend (line)
 
 
 📊 Model Details
+
 Algorithm: LinearRegression (Scikit-learn)
 Input Feature: Time (Days)
 Output: Bitcoin Price
@@ -86,7 +94,9 @@ MSE → Error measurement
 ![Graph](Screenshots/Graph.png)
 
 
+
 📦 Installation
+
 git clone https://github.com/AlamgirKhan48692your-username/bitcoin-price-prediction-using-linear-regresion.git
 cd bitcoin-price-prediction-using-linear-regresion
 pip install -r requirements.txt
@@ -94,7 +104,9 @@ streamlit run app.py
 
 
 
+
 🧠 Example Output
+
 Predicted Price: $79,633.02
 R² Score: 0.456
 MSE: 354,829,993
@@ -107,14 +119,22 @@ This model uses simple Linear Regression, so:
 It captures general trend only
 It does NOT account for market volatility
 Not suitable for real trading decisions
+
+
+
 🚀 Future Improvements
+
 Add advanced models (Random Forest, LSTM)
 Interactive charts (Plotly)
 Multiple feature inputs (Open, High, Low, Volume)
 Export predictions
 Model comparison dashboard
+
+
+
 👨‍💻 Author
 
 Alamgir Khan
-📘 GitHub: https://github.com/your-username
+
+📘 GitHub: https://github.com/AlamgirKhan48692
 
