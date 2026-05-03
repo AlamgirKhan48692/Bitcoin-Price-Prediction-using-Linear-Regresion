@@ -79,11 +79,12 @@ Live App:
 ---
 
 ### 🏠 Home Page
-***
+___
 ![Home](Screenshots/Home.png)
 
 ---
 ### 📊 Dataset Preview
+___
 ![Dataset](Screenshots/Dataset.png)
 
 ---
