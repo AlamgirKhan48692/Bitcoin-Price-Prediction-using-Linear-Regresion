@@ -17,7 +17,7 @@ Live App:
 * Predict future Bitcoin prices
 * Visualize trends interactively
 
-  ***
+***
 ✨ Features
 ---
 * 📂 Upload custom CSV datasets
@@ -107,7 +107,8 @@ Live App:
 * cd bitcoin-price-prediction-using-linear-regresion
 * pip install -r requirements.txt
 * streamlit run app.py
-  ***
+  
+***
   
 🧠 Example Output
 ---
@@ -132,6 +133,7 @@ Live App:
 * Multiple feature inputs (Open, High, Low, Volume
 * Export predictions
 * Model comparison dashboard
+  
 ***
 
 👨‍💻 Author
