@@ -78,25 +78,25 @@ Live App:
 ## 📸 Screenshots
 
 
-### 🏠 Home Page
+### 🏠 Screenshot of Home Page
 
 ![Home](Screenshots/Home.png)
 
 ---
-### 📊 Dataset Preview
+### 📊 Screenshot of Dataset Preview
 
 ![Dataset](Screenshots/Dataset.png)
 
 ---
-### ⚙️ Column Selection
+### ⚙️ Screenshot of Column Selection
 ![Columns](Screenshots/Columns.png)
 
 ---
-### 📈 Model Performance
+### 📈 Screenshot of Model Performance
 ![Performance](Screenshots/Performance.png)
 
 ---
-### 📉 Prediction Graph
+### 📉 Screenshot of Prediction Graph
 ![Graph](Screenshots/Graph.png)
 ***
 
