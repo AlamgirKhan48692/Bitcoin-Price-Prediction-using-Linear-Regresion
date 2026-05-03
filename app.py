@@ -78,27 +78,36 @@ if uploaded_file is not None:
     # ---------------- GRAPH ----------------
     st.subheader("📉 Visualization")
 
-    fig, ax = plt.subplots(figsize=(10, 5))
+fig, ax = plt.subplots(figsize=(10, 5))
 
-    # Scatter plot
-    ax.scatter(X, y, color="blue", alpha=0.6, label="Historical Data")
+# Convert to pure numpy arrays (VERY IMPORTANT)
+x_vals = X.values.flatten().astype(float)
+y_vals = y.values.astype(float)
 
-    # Safe prediction range (fix overflow)
-    max_day = int(data["Days"].max() + future_days)
-    future_range = np.linspace(0, max_day, 500).reshape(-1, 1)
-    future_pred = model.predict(future_range)
+# Scatter
+ax.scatter(x_vals, y_vals, color="blue", alpha=0.6, label="Historical Data")
 
-    # Line plot
-    ax.plot(future_range, future_pred, color="red", linewidth=2, label="Prediction Trend")
+# Safe range (LIMIT SIZE + ensure float)
+max_day = float(data["Days"].max() + future_days)
+future_range = np.linspace(0, max_day, 300).reshape(-1, 1)
 
-    ax.set_xlabel("Days")
-    ax.set_ylabel("Price")
-    ax.set_title("Bitcoin Price Prediction Trend")
+future_pred = model.predict(future_range)
 
-    ax.grid(True, linestyle="--", alpha=0.5)
-    ax.legend()
+# Plot line
+ax.plot(future_range.flatten(), future_pred, color="red", linewidth=2, label="Prediction Trend")
 
-    st.pyplot(fig)
+# Force numeric axis (CRITICAL FIX)
+ax.set_xlim(0, max_day)
+ax.set_ylim(float(y_vals.min()), float(y_vals.max()))
+
+ax.set_xlabel("Days")
+ax.set_ylabel("Price")
+ax.set_title("Bitcoin Price Prediction Trend")
+
+ax.grid(True, linestyle="--", alpha=0.5)
+ax.legend()
+
+st.pyplot(fig)
 
 else:
     st.info("👆 Upload a CSV file to get started")
